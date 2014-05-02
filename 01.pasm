@@ -1,0 +1,3 @@
+LOD#   	5
+DATA 0 0
+DATA 5 0
