@@ -13,5 +13,4 @@ public class ADDI extends Instruction {
         getMachine().incrementCounter();
         return retVal;      
     }
-    // helllo work?
 }

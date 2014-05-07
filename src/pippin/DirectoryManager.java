@@ -11,9 +11,9 @@ import javax.swing.JOptionPane;
 
 public class DirectoryManager {
 	private Machine machine;
-	private String pasmName;
-	private String pexeDirectory;
-	private String eclipse_default_dir;
+	private String sourceDir;
+	private String executableDir;
+	private String eclipseDir;
 	Properties properties;
 
 	public DirectoryManager(Machine machine_in) {
@@ -33,7 +33,7 @@ public class DirectoryManager {
 		} else {
 			eclipseFile = temp.getAbsolutePath();
 		}
-		eclipse_default_dir = extractDir(eclipseFile);
+		eclipseDir = extractDir(eclipseFile);
 		// System.out.println(eclipseDir);--for debugging
 		try { // load properties file "propertyfile.txt", if it exists
 			properties = new Properties();
@@ -41,42 +41,42 @@ public class DirectoryManager {
 			if (inFile.exists()) {
 				FileInputStream in = new FileInputStream(inFile);
 				properties.load(in);
-				pasmName = properties.getProperty("SourceDirectory");
-				pexeDirectory = properties.getProperty("ExecutableDirectory");
+				sourceDir = properties.getProperty("SourceDirectory");
+				executableDir = properties.getProperty("ExecutableDirectory");
 				in.close();
 			}
 
 			// CLEAN UP ANY ERRORS IN WHAT IS STORED:
 
-			if (pasmName == null || pasmName.length() == 0
-					|| !new File(pasmName).exists()) {
-				pasmName = eclipse_default_dir;
+			if (sourceDir == null || sourceDir.length() == 0
+					|| !new File(sourceDir).exists()) {
+				sourceDir = eclipseDir;
 			}
 
-			if (pexeDirectory == null || pexeDirectory.length() == 0
-					|| !new File(pexeDirectory).exists()) {
-				pexeDirectory = eclipse_default_dir;
+			if (executableDir == null || executableDir.length() == 0
+					|| !new File(executableDir).exists()) {
+				executableDir = eclipseDir;
 			}
 		} catch (Exception e) {
-			pasmName = eclipse_default_dir;
-			pexeDirectory = eclipse_default_dir;
+			sourceDir = eclipseDir;
+			executableDir = eclipseDir;
 		}
-		System.out.println(eclipse_default_dir);
-		System.out.println(pasmName);
-		System.out.println(pexeDirectory);
+		System.out.println(eclipseDir);
+		System.out.println(sourceDir);
+		System.out.println(executableDir);
 
 	}
 
-	public String getPasmName() {
-		return pasmName;
+	public String getSourceDir() {
+		return sourceDir;
 	}
 
-	public String getPexeDirectory() {
-		return pexeDirectory;
+	public String getExecutableDir() {
+		return executableDir;
 	}
 
-	public String getEclipse_default_dir() {
-		return eclipse_default_dir;
+	public String getEclipseDir() {
+		return eclipseDir;
 	}
 
 	private static String extractDir(String fileName) {
@@ -88,14 +88,14 @@ public class DirectoryManager {
 	}
 
 	public void recordExecutableDir(String executableFile) {
-		pexeDirectory = extractDir(executableFile);
-		properties.setProperty("ExecutableDirectory", pexeDirectory);
+		executableDir = extractDir(executableFile);
+		properties.setProperty("ExecutableDirectory", executableDir);
 
 	}
 
 	public void recordSourceDir(String sourceFile) {
-		pasmName = extractDir(sourceFile);
-		properties.setProperty("Soruce Directory", pasmName);
+		sourceDir = extractDir(sourceFile);
+		properties.setProperty("Soruce Directory", sourceDir);
 	}
 
 	public void closePropertiesFile() {
